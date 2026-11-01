@@ -1,0 +1,20 @@
+# Aegis-Volt: Unified Cross-Layer Cognitive Network Orchestrator
+# Core Dependencies for Tata Elxsi Engineering Challenge
+
+# Scientific computing & chaos attractor phase-space
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Optional JIT compilation for high-frequency phase space analysis
+numba>=0.58.0; platform_python_implementation != 'PyPy'
+
+# Web Dashboard & Real-Time SSE Telemetry Server
+fastapi>=0.100.0
+uvicorn[standard]>=0.22.0
+pydantic>=2.0.0
+
+# Empirical Validation & Visual Scorecard Generation
+matplotlib>=3.7.0
+
+# Linux Kernel Netlink Interface (Required for hardware deployment on OpenWrt / RDK-B)
+pyroute2>=0.7.3; sys_platform == "linux"

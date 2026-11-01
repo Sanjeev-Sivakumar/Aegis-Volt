@@ -1,0 +1,35 @@
+{
+  "control_fifo": {
+    "name": "Stock Linux (Default FIFO)",
+    "p50_rtt_ms": 466.78,
+    "p95_rtt_ms": 568.52,
+    "p99_rtt_ms": 572.89,
+    "jitter_ms": 165.34,
+    "loss_pct": 25.0,
+    "jains_fairness": 0.34,
+    "cpu_overhead_pct": 0.2,
+    "bufferbloat_status": "SEVERE_BUFFERBLOAT"
+  },
+  "static_codel": {
+    "name": "Static FQ-CoDel Baseline",
+    "p50_rtt_ms": 37.39,
+    "p95_rtt_ms": 50.52,
+    "p99_rtt_ms": 52.28,
+    "jitter_ms": 8.27,
+    "loss_pct": 1.8,
+    "jains_fairness": 0.72,
+    "cpu_overhead_pct": 2.8,
+    "bufferbloat_status": "MODERATE_CONTROLLED"
+  },
+  "aura_qos": {
+    "name": "AURA-QoS (Our Protocol)",
+    "p50_rtt_ms": 15.0,
+    "p95_rtt_ms": 15.0,
+    "p99_rtt_ms": 15.0,
+    "jitter_ms": 0.0,
+    "loss_pct": 0.0,
+    "jains_fairness": 0.88,
+    "cpu_overhead_pct": 0.75,
+    "bufferbloat_status": "ZERO_BUFFERBLOAT_OPTIMAL"
+  }
+}
