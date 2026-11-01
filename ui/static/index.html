@@ -3,153 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aegis-Volt | Pre-Emptive Cross-Layer Network Gateway</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>AEGIS-VOLT | Pre-Emptive Cross-Layer Network Orchestrator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0a0e17;
-            --card-bg: #121826;
-            --border-color: #1f293d;
-            --accent-cyan: #00f0ff;
-            --accent-green: #00ff88;
-            --accent-amber: #ffb800;
-            --accent-red: #ff3366;
-            --accent-purple: #b55fe6;
-            --text-main: #f0f4f8;
-            --text-dim: #8b9bb4;
+            --bg-base: #08090D;
+            --card-bg: #11121A;
+            --card-hover: #151622;
+            --card-border: rgba(255, 255, 255, 0.08);
+            --card-border-focus: rgba(255, 255, 255, 0.16);
+            --text-primary: #FFFFFF;
+            --text-secondary: #9499AD;
+            --text-tertiary: #62677E;
+            --accent-purple: #A855F7;
+            --accent-cyan: #06B6D4;
+            --accent-green: #10B981;
+            --accent-amber: #F59E0B;
+            --accent-red: #EF4444;
+            --radius-card: 22px;
+            --radius-pill: 9999px;
+            --radius-btn: 14px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            padding: 20px;
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(circle at 50% -10%, rgba(120, 119, 198, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 85% 20%, rgba(6, 182, 212, 0.06) 0%, transparent 45%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px 32px;
             overflow-x: hidden;
         }
 
+        /* Top Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .header-title {
+        .header-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
         }
 
-        .header-title h1 {
+        .logo-symbol {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-title-box h1 {
             font-size: 24px;
-            letter-spacing: 1px;
-            color: var(--accent-cyan);
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #FFFFFF;
+            line-height: 1.2;
+        }
+
+        .header-title-box p {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-top: 2px;
         }
 
         .header-badges {
             display: flex;
-            gap: 8px;
+            gap: 10px;
+            align-items: center;
             flex-wrap: wrap;
         }
 
-        .badge {
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 4px;
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 11.5px;
             font-weight: 600;
-            text-transform: uppercase;
+            letter-spacing: 0.2px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
         }
 
-        .badge-nilm {
-            background: rgba(181, 95, 230, 0.15);
-            color: var(--accent-purple);
-            border: 1px solid var(--accent-purple);
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
         }
 
-        .badge-ebpf {
-            background: rgba(0, 240, 255, 0.15);
-            color: var(--accent-cyan);
-            border: 1px solid var(--accent-cyan);
+        .pill-nilm {
+            background: rgba(168, 85, 247, 0.08);
+            border-color: rgba(168, 85, 247, 0.24);
+            color: #D8B4FE;
         }
+        .pill-nilm .status-dot { background: #A855F7; box-shadow: 0 0 8px #A855F7; }
 
-        .badge-fuse {
-            background: rgba(0, 255, 136, 0.15);
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green);
+        .pill-ebpf {
+            background: rgba(6, 182, 212, 0.08);
+            border-color: rgba(6, 182, 212, 0.24);
+            color: #67E8F9;
         }
+        .pill-ebpf .status-dot { background: #06B6D4; box-shadow: 0 0 8px #06B6D4; }
 
-        .badge-shadow {
-            background: rgba(255, 184, 0, 0.15);
-            color: var(--accent-amber);
-            border: 1px solid var(--accent-amber);
+        .pill-shadow {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: rgba(245, 158, 11, 0.24);
+            color: #FCD34D;
         }
+        .pill-shadow .status-dot { background: #F59E0B; box-shadow: 0 0 8px #F59E0B; }
 
-        .grid {
+        .pill-fuse {
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.24);
+            color: #6EE7B7;
+        }
+        .pill-fuse .status-dot { background: #10B981; box-shadow: 0 0 8px #10B981; }
+
+        /* Top 4 KPI Grid */
+        .kpi-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-            margin-bottom: 22px;
+            gap: 20px;
+            margin-bottom: 24px;
         }
 
-        .card {
+        .kpi-card {
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 18px;
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-card);
+            padding: 22px;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .card-title {
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--card-border-focus);
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .kpi-title {
             font-size: 13px;
-            color: var(--text-dim);
-            text-transform: uppercase;
             font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.2px;
+        }
+
+        .kpi-icon-pill {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .kpi-metric-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
             margin-bottom: 8px;
         }
 
-        .metric-value {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text-main);
+        .kpi-value {
+            font-size: 38px;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: -0.8px;
+            line-height: 1;
+            font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+        }
+
+        .kpi-unit {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+        }
+
+        .kpi-trend-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+            width: fit-content;
+            margin-bottom: 12px;
+        }
+
+        .trend-purple {
+            background: rgba(168, 85, 247, 0.12);
+            color: #C084FC;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        .trend-green {
+            background: rgba(16, 185, 129, 0.12);
+            color: #34D399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .trend-cyan {
+            background: rgba(6, 182, 212, 0.12);
+            color: #22D3EE;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .trend-amber {
+            background: rgba(245, 158, 11, 0.12);
+            color: #FBBF24;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .kpi-sparkline {
+            width: 100%;
+            height: 48px;
+            margin-top: 4px;
+        }
+
+        /* Main Section Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1.2fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-card);
+            padding: 24px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 10px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        .card-header-bar {
             display: flex;
-            align-items: baseline;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .card-header-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: 0.2px;
+        }
+
+        .legend-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
             gap: 6px;
         }
 
-        .metric-unit {
-            font-size: 14px;
-            color: var(--text-dim);
-            font-weight: 500;
-        }
-
-        .metric-sub {
-            font-size: 12px;
-            color: var(--accent-green);
-            margin-top: 6px;
-            font-weight: 500;
-        }
-
-        .main-layout {
-            display: grid;
-            grid-template-columns: 2fr 1.2fr;
-            gap: 20px;
-            margin-bottom: 22px;
-        }
-
-        .canvas-container {
+        .canvas-wrapper {
             position: relative;
-            height: 280px;
+            height: 320px;
             width: 100%;
+            border-radius: 14px;
+            background: #0B0C14;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
         }
 
         canvas {
@@ -157,242 +323,578 @@
             height: 100% !important;
         }
 
-        .controls-panel {
+        /* Control Panel */
+        .controls-card {
+            background: linear-gradient(155deg, #151624 0%, #0E0F17 100%);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: var(--radius-card);
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            justify-content: space-between;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 36px rgba(0, 0, 0, 0.45);
         }
 
-        .btn {
-            background: #1c2638;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 11px 14px;
-            border-radius: 6px;
+        .button-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-btn);
+            padding: 12px 16px;
+            color: #FFFFFF;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
         }
 
-        .btn:hover {
-            border-color: var(--accent-cyan);
-            background: #25334c;
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.16);
+            transform: translateY(-1px);
+        }
+
+        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 0.3px;
         }
 
         .btn-nilm {
-            border-color: var(--accent-purple);
-            background: rgba(181, 95, 230, 0.12);
-            color: var(--accent-purple);
+            border-color: rgba(168, 85, 247, 0.28);
+            background: rgba(168, 85, 247, 0.08);
         }
+        .btn-nilm:hover {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 4px 16px rgba(168, 85, 247, 0.15);
+        }
+        .btn-nilm .btn-badge { color: #D8B4FE; border-color: rgba(168, 85, 247, 0.3); }
 
         .btn-boost {
-            border-color: var(--accent-cyan);
-            background: rgba(0, 240, 255, 0.12);
-            color: var(--accent-cyan);
+            border-color: rgba(6, 182, 212, 0.28);
+            background: rgba(6, 182, 212, 0.08);
         }
+        .btn-boost:hover {
+            background: rgba(6, 182, 212, 0.15);
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 4px 16px rgba(6, 182, 212, 0.15);
+        }
+        .btn-boost .btn-badge { color: #67E8F9; border-color: rgba(6, 182, 212, 0.3); }
 
         .btn-wan {
-            border-color: var(--accent-amber);
-            background: rgba(255, 184, 0, 0.12);
-            color: var(--accent-amber);
+            border-color: rgba(245, 158, 11, 0.28);
+            background: rgba(245, 158, 11, 0.08);
         }
+        .btn-wan:hover {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: rgba(245, 158, 11, 0.5);
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.15);
+        }
+        .btn-wan .btn-badge { color: #FCD34D; border-color: rgba(245, 158, 11, 0.3); }
 
         .btn-fuse {
-            border-color: var(--accent-red);
-            background: rgba(255, 51, 102, 0.12);
-            color: var(--accent-red);
+            border-color: rgba(239, 68, 68, 0.28);
+            background: rgba(239, 68, 68, 0.08);
+        }
+        .btn-fuse:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.5);
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.15);
+        }
+        .btn-fuse .btn-badge { color: #FCA5A5; border-color: rgba(239, 68, 68, 0.3); }
+
+        /* Tin Distribution */
+        .tin-matrix-box {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 16px;
         }
 
-        .tin-distribution {
+        .tin-title {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            letter-spacing: 0.2px;
+        }
+
+        .tin-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-top: 8px;
+            gap: 10px;
         }
 
         .tin-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 12px;
+            font-size: 12.5px;
+            font-weight: 600;
         }
 
-        .tin-bar-bg {
-            flex-grow: 1;
-            height: 6px;
-            background: #1c2638;
-            border-radius: 3px;
-            margin: 0 10px;
+        .tin-label {
+            width: 76px;
+        }
+
+        .tin-track {
+            flex: 1;
+            height: 7px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-pill);
+            margin: 0 14px;
             overflow: hidden;
         }
 
-        .tin-bar-fill {
+        .tin-fill {
             height: 100%;
-            border-radius: 3px;
+            border-radius: var(--radius-pill);
             transition: width 0.3s ease;
         }
 
-        .log-terminal {
-            background: #06090e;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 12px;
-            font-family: monospace;
+        .tin-value {
+            width: 55px;
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
-            color: #79c0ff;
-            height: 130px;
+            color: var(--text-secondary);
+        }
+
+        /* Bottom Terminal */
+        .terminal-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-card);
+            padding: 22px 24px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .terminal-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .terminal-status-light {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #10B981;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+        }
+
+        .terminal-screen {
+            background: #090A10;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #A5B4FC;
+            height: 140px;
             overflow-y: auto;
         }
 
         .log-entry {
-            margin-bottom: 4px;
             display: flex;
-            gap: 8px;
+            gap: 10px;
+            margin-bottom: 5px;
         }
 
-        .log-time {
-            color: #484f58;
+        .tag-boot {
+            color: #38BDF8;
+            font-weight: 700;
+        }
+
+        .tag-nilm {
+            color: #C084FC;
+            font-weight: 700;
+        }
+
+        .tag-intent {
+            color: #34D399;
+            font-weight: 700;
+        }
+
+        .tag-shadow {
+            color: #FBBF24;
+            font-weight: 700;
+        }
+
+        .tag-fuse {
+            color: #F87171;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
 
+    <!-- Header -->
     <header>
-        <div class="header-title">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-            </svg>
-            <h1>AEGIS-VOLT</h1>
-            <span style="font-size: 13px; color: var(--text-dim); margin-left: 8px;">Pre-Emptive Cross-Layer Network Orchestrator</span>
+        <div class="header-left">
+            <div class="logo-symbol">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+            </div>
+            <div class="header-title-box">
+                <h1>AEGIS-VOLT</h1>
+                <p>Pre-Emptive Cross-Layer Network Orchestrator</p>
+            </div>
         </div>
         <div class="header-badges">
-            <span class="badge badge-nilm" id="badge-nilm">NILM Grid: 4.0 kHz (Active)</span>
-            <span class="badge badge-ebpf">eBPF / XDP Hook</span>
-            <span class="badge badge-shadow" id="badge-shadow">Shadow Staging: Gini Verified</span>
-            <span class="badge badge-fuse" id="badge-fuse">Circuit Breaker: ARMED (<80%)</span>
+            <div class="status-pill pill-nilm" id="badge-nilm">
+                <span class="status-dot"></span>
+                <span>NILM Grid: 4.0 kHz (Active)</span>
+            </div>
+            <div class="status-pill pill-ebpf">
+                <span class="status-dot"></span>
+                <span>eBPF / XDP Hook</span>
+            </div>
+            <div class="status-pill pill-shadow" id="badge-shadow">
+                <span class="status-dot"></span>
+                <span>Shadow Staging: Gini Verified</span>
+            </div>
+            <div class="status-pill pill-fuse" id="badge-fuse">
+                <span class="status-dot"></span>
+                <span>Circuit Breaker: ARMED (&lt;80%)</span>
+            </div>
         </div>
     </header>
 
     <!-- Top KPI Grid -->
-    <div class="grid">
-        <div class="card">
-            <div class="card-title">Physical Grid Telemetry (NILM)</div>
-            <div class="metric-value">
-                <span id="metric-power">142.5</span>
-                <span class="metric-unit">Watts</span>
+    <div class="kpi-grid">
+        <!-- 1. Physical Grid Telemetry -->
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-title">Physical Grid Telemetry (NILM)</span>
+                <div class="kpi-icon-pill">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                    </svg>
+                </div>
             </div>
-            <div class="metric-sub" id="metric-current" style="color: var(--accent-purple);">0.62 A Current Draw (230V)</div>
+            <div>
+                <div class="kpi-metric-row">
+                    <span class="kpi-value" id="metric-power">142.5</span>
+                    <span class="kpi-unit">Watts</span>
+                </div>
+                <div class="kpi-trend-pill trend-purple">
+                    <span style="font-size: 8px;">●</span>
+                    <span id="metric-current">0.62 A Current Draw (230V)</span>
+                </div>
+            </div>
+            <svg class="kpi-sparkline" viewBox="0 0 220 48" fill="none">
+                <defs>
+                    <linearGradient id="grad-nilm" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#A855F7" stop-opacity="0.25"/>
+                        <stop offset="100%" stop-color="#A855F7" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <path d="M0 38 Q 30 36, 60 30 T 120 18 T 170 32 T 220 20 L 220 48 L 0 48 Z" fill="url(#grad-nilm)"/>
+                <path d="M0 38 Q 30 36, 60 30 T 120 18 T 170 32 T 220 20" stroke="#A855F7" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
         </div>
 
-        <div class="card">
-            <div class="card-title">Interactive RTT Latency</div>
-            <div class="metric-value">
-                <span id="metric-rtt">14.8</span>
-                <span class="metric-unit">ms</span>
+        <!-- 2. Interactive RTT Latency -->
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-title">Interactive RTT Latency</span>
+                <div class="kpi-icon-pill">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
             </div>
-            <div class="metric-sub" id="metric-bloat">Zero Bufferbloat (<20ms Target)</div>
+            <div>
+                <div class="kpi-metric-row">
+                    <span class="kpi-value" id="metric-rtt">14.8</span>
+                    <span class="kpi-unit">ms</span>
+                </div>
+                <div class="kpi-trend-pill trend-green">
+                    <span style="font-size: 8px;">●</span>
+                    <span id="metric-bloat">Zero Bufferbloat (&lt;20ms Target)</span>
+                </div>
+            </div>
+            <svg class="kpi-sparkline" viewBox="0 0 220 48" fill="none">
+                <defs>
+                    <linearGradient id="grad-rtt" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#10B981" stop-opacity="0.25"/>
+                        <stop offset="100%" stop-color="#10B981" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <path d="M0 34 Q 40 33, 80 32 T 150 34 T 220 33 L 220 48 L 0 48 Z" fill="url(#grad-rtt)"/>
+                <path d="M0 34 Q 40 33, 80 32 T 150 34 T 220 33" stroke="#10B981" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
         </div>
 
-        <div class="card">
-            <div class="card-title">Interactive Jitter (σ)</div>
-            <div class="metric-value">
-                <span id="metric-jitter">1.1</span>
-                <span class="metric-unit">ms</span>
+        <!-- 3. Interactive Jitter (σ) -->
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-title">Interactive Jitter (σ)</span>
+                <div class="kpi-icon-pill">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                </div>
             </div>
-            <div class="metric-sub">ECN Window Injection Active</div>
+            <div>
+                <div class="kpi-metric-row">
+                    <span class="kpi-value" id="metric-jitter">1.1</span>
+                    <span class="kpi-unit">ms</span>
+                </div>
+                <div class="kpi-trend-pill trend-cyan">
+                    <span style="font-size: 8px;">●</span>
+                    <span>ECN Window Injection Active</span>
+                </div>
+            </div>
+            <svg class="kpi-sparkline" viewBox="0 0 220 48" fill="none">
+                <defs>
+                    <linearGradient id="grad-jitter" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.25"/>
+                        <stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <path d="M0 30 Q 30 32, 60 28 T 110 32 T 160 27 T 220 29 L 220 48 L 0 48 Z" fill="url(#grad-jitter)"/>
+                <path d="M0 30 Q 30 32, 60 28 T 110 32 T 160 27 T 220 29" stroke="#06B6D4" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
         </div>
 
-        <div class="card">
-            <div class="card-title">Shadow Gini Fairness Index</div>
-            <div class="metric-value">
-                <span id="metric-gini">0.24</span>
-                <span class="metric-unit">/ 1.0</span>
+        <!-- 4. Shadow Gini Fairness Index -->
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-title">Shadow Gini Fairness Index</span>
+                <div class="kpi-icon-pill">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
             </div>
-            <div class="metric-sub" id="metric-floor">Bulk Queue Floor: 10.0% Guaranteed</div>
+            <div>
+                <div class="kpi-metric-row">
+                    <span class="kpi-value" id="metric-gini">0.24</span>
+                    <span class="kpi-unit">/ 1.0</span>
+                </div>
+                <div class="kpi-trend-pill trend-amber">
+                    <span style="font-size: 8px;">●</span>
+                    <span id="metric-floor">Bulk Queue Floor: 10.0% Guaranteed</span>
+                </div>
+            </div>
+            <svg class="kpi-sparkline" viewBox="0 0 220 48" fill="none">
+                <defs>
+                    <linearGradient id="grad-gini" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.25"/>
+                        <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <path d="M0 35 Q 40 25, 90 28 T 160 22 T 220 20 L 220 48 L 0 48 Z" fill="url(#grad-gini)"/>
+                <path d="M0 35 Q 40 25, 90 28 T 160 22 T 220 20" stroke="#F59E0B" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
         </div>
     </div>
 
-    <!-- Main Layout: Attractor Canvas & Control Panel -->
-    <div class="main-layout">
-        <!-- 2D Chaos Attractor Orbital Map -->
-        <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <div class="card-title" style="margin-bottom: 0;">Takens' Delay-Coordinate Attractor Orbit</div>
-                <div style="font-size: 11px; color: var(--text-dim);">
-                    <span style="color: var(--accent-green)">● Priority/Gaming</span> &nbsp;
-                    <span style="color: var(--accent-amber)">● Video Stream</span> &nbsp;
-                    <span style="color: var(--accent-red)">● Bulk Torrent</span>
+    <!-- Main Grid: Chaos Attractor Canvas + Command Controls -->
+    <div class="main-grid">
+        <!-- 2D Attractor Orbit Canvas -->
+        <div class="content-card">
+            <div class="card-header-bar">
+                <span class="card-header-title">Takens' Delay-Coordinate Attractor Orbit</span>
+                <div class="legend-group">
+                    <div class="legend-item">
+                        <span style="color: #10B981;">●</span>
+                        <span>Priority/Gaming</span>
+                    </div>
+                    <div class="legend-item">
+                        <span style="color: #F59E0B;">●</span>
+                        <span>Video Stream</span>
+                    </div>
+                    <div class="legend-item">
+                        <span style="color: #EF4444;">●</span>
+                        <span>Bulk Torrent</span>
+                    </div>
                 </div>
             </div>
-            <div class="canvas-container">
+            <div class="canvas-wrapper">
                 <canvas id="attractorCanvas"></canvas>
             </div>
         </div>
 
-        <!-- Interactive Control Panel -->
-        <div class="card controls-panel">
-            <div class="card-title">Pre-Emptive Triggers & Circuit Breakers</div>
+        <!-- Interactive Control Panel & DRR Tin Matrix -->
+        <div class="controls-card">
+            <div>
+                <div class="card-header-bar" style="margin-bottom: 14px;">
+                    <span class="card-header-title">Pre-Emptive Triggers &amp; Circuit Breakers</span>
+                </div>
+                <div class="button-stack">
+                    <!-- Button 1: NILM GPU Power Spike -->
+                    <button class="control-btn btn-nilm" onclick="triggerNilmSpike()">
+                        <div class="btn-left">
+                            <div class="btn-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C084FC" stroke-width="2.2">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                                </svg>
+                            </div>
+                            <span>Trigger NILM GPU Power Spike</span>
+                        </div>
+                        <span class="btn-badge">Pre-Empt Queue</span>
+                    </button>
 
-            <button class="btn btn-nilm" onclick="triggerNilmSpike()">
-                <span>🔌 Trigger NILM GPU Power Spike</span>
-                <span style="font-size: 11px;">Pre-Empt Queue</span>
-            </button>
+                    <!-- Button 2: Work Call Priority Boost -->
+                    <button class="control-btn btn-boost" id="btn-boost" onclick="toggleWorkBoost()">
+                        <div class="btn-left">
+                            <div class="btn-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2.2">
+                                    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                                </svg>
+                            </div>
+                            <span>Work Call Priority Boost</span>
+                        </div>
+                        <span class="btn-badge" id="boost-status">OFF</span>
+                    </button>
 
-            <button class="btn btn-boost" id="btn-boost" onclick="toggleWorkBoost()">
-                <span>🚀 Work Call Priority Boost</span>
-                <span id="boost-status" style="font-size: 11px;">OFF</span>
-            </button>
+                    <!-- Button 3: Simulate WAN Collapse -->
+                    <button class="control-btn btn-wan" id="btn-wan" onclick="toggleWanDrop()">
+                        <div class="btn-left">
+                            <div class="btn-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2.2">
+                                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5M2 7l10 5 10-5"></path>
+                                </svg>
+                            </div>
+                            <span>Simulate WAN Collapse (100M -&gt; 20M)</span>
+                        </div>
+                        <span class="btn-badge" id="wan-status">100M</span>
+                    </button>
 
-            <button class="btn btn-wan" id="btn-wan" onclick="toggleWanDrop()">
-                <span>⚠️ Simulate WAN Collapse (100M -> 20M)</span>
-                <span id="wan-status" style="font-size: 11px;">100M</span>
-            </button>
+                    <!-- Button 4: Trip 80% CPU Circuit Breaker -->
+                    <button class="control-btn btn-fuse" onclick="tripCircuitBreaker()">
+                        <div class="btn-left">
+                            <div class="btn-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2.2">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                    <rect x="9" y="9" width="6" height="6"></rect>
+                                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                                </svg>
+                            </div>
+                            <span>Trip 80% CPU Circuit Breaker</span>
+                        </div>
+                        <span class="btn-badge">Safe Rollback</span>
+                    </button>
+                </div>
+            </div>
 
-            <button class="btn btn-fuse" onclick="tripCircuitBreaker()">
-                <span>⚡ Trip 80% CPU Circuit Breaker</span>
-                <span style="font-size: 11px;">Safe Rollback</span>
-            </button>
-
-            <div style="margin-top: 6px;">
-                <div class="card-title">Primary Routing Matrix (CAKE DRR Tins)</div>
-                <div class="tin-distribution">
+            <!-- Primary Routing Matrix (CAKE DRR Tins) -->
+            <div class="tin-matrix-box">
+                <div class="tin-title">Primary Routing Matrix (CAKE DRR Tins)</div>
+                <div class="tin-list">
                     <div class="tin-row">
-                        <span style="width: 70px; color: var(--accent-green);">Priority</span>
-                        <div class="tin-bar-bg"><div class="tin-bar-fill" id="bar-priority" style="width: 25%; background: var(--accent-green);"></div></div>
-                        <span id="txt-priority" style="width: 45px; text-align: right;">1.8 MB</span>
+                        <span class="tin-label" style="color: #34D399;">Priority</span>
+                        <div class="tin-track">
+                            <div class="tin-fill" id="bar-priority" style="width: 25%; background: linear-gradient(90deg, #059669, #10B981);"></div>
+                        </div>
+                        <span class="tin-value" id="txt-priority">1.8 MB</span>
                     </div>
                     <div class="tin-row">
-                        <span style="width: 70px; color: var(--accent-amber);">Video</span>
-                        <div class="tin-bar-bg"><div class="tin-bar-fill" id="bar-video" style="width: 35%; background: var(--accent-amber);"></div></div>
-                        <span id="txt-video" style="width: 45px; text-align: right;">4.2 MB</span>
+                        <span class="tin-label" style="color: #FBBF24;">Video</span>
+                        <div class="tin-track">
+                            <div class="tin-fill" id="bar-video" style="width: 35%; background: linear-gradient(90deg, #D97706, #F59E0B);"></div>
+                        </div>
+                        <span class="tin-value" id="txt-video">4.2 MB</span>
                     </div>
                     <div class="tin-row">
-                        <span style="width: 70px; color: #79c0ff;">BestEffort</span>
-                        <div class="tin-bar-bg"><div class="tin-bar-fill" id="bar-besteffort" style="width: 15%; background: #79c0ff;"></div></div>
-                        <span id="txt-besteffort" style="width: 45px; text-align: right;">0.9 MB</span>
+                        <span class="tin-label" style="color: #38BDF8;">BestEffort</span>
+                        <div class="tin-track">
+                            <div class="tin-fill" id="bar-besteffort" style="width: 15%; background: linear-gradient(90deg, #0284C7, #38BDF8);"></div>
+                        </div>
+                        <span class="tin-value" id="txt-besteffort">0.9 MB</span>
                     </div>
                     <div class="tin-row">
-                        <span style="width: 70px; color: var(--accent-red);">Bulk</span>
-                        <div class="tin-bar-bg"><div class="tin-bar-fill" id="bar-bulk" style="width: 45%; background: var(--accent-red);"></div></div>
-                        <span id="txt-bulk" style="width: 45px; text-align: right;">8.5 MB</span>
+                        <span class="tin-label" style="color: #F87171;">Bulk</span>
+                        <div class="tin-track">
+                            <div class="tin-fill" id="bar-bulk" style="width: 45%; background: linear-gradient(90deg, #DC2626, #EF4444);"></div>
+                        </div>
+                        <span class="tin-value" id="txt-bulk">8.5 MB</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Live Kernel & NILM Event Stream -->
-    <div class="card">
-        <div class="card-title">Live Cross-Layer Kernel & Physical Grid Event Stream</div>
-        <div class="log-terminal" id="logTerminal">
-            <div class="log-entry"><span class="log-time">[BOOT]</span> Aegis-Volt Pre-Emptive Gateway initialized.</div>
-            <div class="log-entry"><span class="log-time">[BOOT]</span> NILM Physical Telemetry Hook listening @ 4.0 kHz sampling rate.</div>
-            <div class="log-entry"><span class="log-time">[BOOT]</span> Shadow Staging Table mounted. Gini fairness certified: G = 0.24 (Bulk floor: 10.0%).</div>
-            <div class="log-entry"><span class="log-time">[BOOT]</span> Anti-Overload Circuit Breaker armed with 80% CPU tripwire and 5.0s watchdog register.</div>
+    <!-- Live Event Stream Terminal -->
+    <div class="terminal-card">
+        <div class="terminal-header">
+            <span class="terminal-title">Live Cross-Layer Kernel &amp; Physical Grid Event Stream</span>
+            <div class="terminal-status-light">
+                <span style="font-size: 8px;">●</span>
+                <span>ENGINE ONLINE</span>
+            </div>
+        </div>
+        <div class="terminal-screen" id="logTerminal">
+            <div class="log-entry">
+                <span class="tag-boot">[BOOT]</span>
+                <span>Aegis-Volt Pre-Emptive Gateway initialized.</span>
+            </div>
+            <div class="log-entry">
+                <span class="tag-boot">[BOOT]</span>
+                <span>NILM Physical Telemetry Hook listening @ 4.0 kHz sampling rate.</span>
+            </div>
+            <div class="log-entry">
+                <span class="tag-boot">[BOOT]</span>
+                <span>Shadow Staging Table mounted. Gini fairness certified: G = 0.24 (Bulk floor: 10.0%).</span>
+            </div>
+            <div class="log-entry">
+                <span class="tag-boot">[BOOT]</span>
+                <span>Anti-Overload Circuit Breaker armed with 80% CPU tripwire and 5.0s watchdog register.</span>
+            </div>
         </div>
     </div>
 
@@ -418,20 +920,38 @@
         function renderAttractor() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            ctx.strokeStyle = "#1a2333";
+            // Sleek Grid lines
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
             ctx.lineWidth = 1;
+            for (let x = 60; x < canvas.width - 20; x += 60) {
+                ctx.beginPath();
+                ctx.moveTo(x, 20);
+                ctx.lineTo(x, canvas.height - 30);
+                ctx.stroke();
+            }
+            for (let y = 30; y < canvas.height - 30; y += 50) {
+                ctx.beginPath();
+                ctx.moveTo(40, y);
+                ctx.lineTo(canvas.width - 20, y);
+                ctx.stroke();
+            }
+
+            // Coordinate Axes
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
+            ctx.lineWidth = 1.2;
             ctx.beginPath();
             ctx.moveTo(40, 20);
             ctx.lineTo(40, canvas.height - 30);
             ctx.lineTo(canvas.width - 20, canvas.height - 30);
             ctx.stroke();
 
-            ctx.fillStyle = "#4a5b78";
-            ctx.font = "10px monospace";
-            ctx.fillText("0ms", 40, canvas.height - 15);
-            ctx.fillText("Inter-Arrival Time (Δt) → 50ms", canvas.width - 160, canvas.height - 15);
-            ctx.fillText("MTU (1500B)", 45, 25);
+            ctx.fillStyle = "#64748B";
+            ctx.font = "10px 'JetBrains Mono', monospace";
+            ctx.fillText("0ms", 40, canvas.height - 14);
+            ctx.fillText("Inter-Arrival Time (Δt) → 50ms", canvas.width - 190, canvas.height - 14);
+            ctx.fillText("MTU (1500B)", 45, 28);
 
+            // Render Orbit Points & Limit Cycles
             attractorPoints.forEach((pt, idx) => {
                 const normX = Math.min(1.0, pt.dt / 45.0);
                 const normY = Math.min(1.0, pt.len / 1500.0);
@@ -439,21 +959,27 @@
                 const x = 40 + normX * (canvas.width - 70);
                 const y = (canvas.height - 30) - (normY * (canvas.height - 60));
 
-                let color = "#00ff88";
-                if (pt.tin === "bulk") color = "#ff3366";
-                else if (pt.tin === "video") color = "#ffb800";
-                else if (pt.tin === "besteffort") color = "#79c0ff";
+                let color = "#10B981";
+                if (pt.tin === "bulk") color = "#EF4444";
+                else if (pt.tin === "video") color = "#F59E0B";
+                else if (pt.tin === "besteffort") color = "#38BDF8";
 
+                // Point with glow
+                ctx.save();
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = color;
                 ctx.fillStyle = color;
                 ctx.beginPath();
-                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.arc(x, y, 3.5, 0, Math.PI * 2);
                 ctx.fill();
+                ctx.restore();
 
+                // Connecting orbital line
                 if (idx > 0 && attractorPoints[idx - 1].tin === pt.tin) {
                     const prevX = 40 + Math.min(1.0, attractorPoints[idx - 1].dt / 45.0) * (canvas.width - 70);
                     const prevY = (canvas.height - 30) - (Math.min(1.0, attractorPoints[idx - 1].len / 1500.0) * (canvas.height - 60));
-                    ctx.strokeStyle = color + "44";
-                    ctx.lineWidth = 1.5;
+                    ctx.strokeStyle = color + "40";
+                    ctx.lineWidth = 1.8;
                     ctx.beginPath();
                     ctx.moveTo(prevX, prevY);
                     ctx.lineTo(x, y);
@@ -469,8 +995,10 @@
             const data = JSON.parse(event.data);
 
             // Metrics
-            document.getElementById("metric-rtt").innerText = data.link.smoothed_rtt_ms.toFixed(1);
-            document.getElementById("metric-jitter").innerText = data.link.rtt_std_ms.toFixed(1);
+            if (data.link) {
+                document.getElementById("metric-rtt").innerText = data.link.smoothed_rtt_ms.toFixed(1);
+                document.getElementById("metric-jitter").innerText = data.link.rtt_std_ms.toFixed(1);
+            }
 
             if (data.power_grid_nilm) {
                 document.getElementById("metric-power").innerText = data.power_grid_nilm.real_power_watts.toFixed(1);
@@ -485,54 +1013,62 @@
             if (data.cpu_fuse) {
                 const fuseBadge = document.getElementById("badge-fuse");
                 if (data.cpu_fuse.tripped) {
-                    fuseBadge.innerText = "Circuit Breaker: TRIPPED (Safe Rollback)";
-                    fuseBadge.style.borderColor = "var(--accent-red)";
-                    fuseBadge.style.color = "var(--accent-red)";
+                    fuseBadge.innerHTML = `<span class="status-dot" style="background:#EF4444;box-shadow:0 0 8px #EF4444;"></span><span>Circuit Breaker: TRIPPED (Safe Rollback)</span>`;
+                    fuseBadge.style.borderColor = "rgba(239, 68, 68, 0.4)";
+                    fuseBadge.style.color = "#FCA5A5";
+                    fuseBadge.style.background = "rgba(239, 68, 68, 0.12)";
                 } else {
-                    fuseBadge.innerText = `Circuit Breaker: ARMED (${data.cpu_fuse.current_cpu_pct}% CPU)`;
-                    fuseBadge.style.borderColor = "var(--accent-green)";
-                    fuseBadge.style.color = "var(--accent-green)";
+                    fuseBadge.innerHTML = `<span class="status-dot"></span><span>Circuit Breaker: ARMED (${data.cpu_fuse.current_cpu_pct}% CPU)</span>`;
+                    fuseBadge.style.borderColor = "rgba(16, 185, 129, 0.24)";
+                    fuseBadge.style.color = "#6EE7B7";
+                    fuseBadge.style.background = "rgba(16, 185, 129, 0.08)";
                 }
             }
 
             // Tin Stats
-            const stats = data.tc.tin_stats;
-            const totalBytes = (stats.priority.bytes + stats.video.bytes + stats.besteffort.bytes + stats.bulk.bytes) || 1;
+            if (data.tc && data.tc.tin_stats) {
+                const stats = data.tc.tin_stats;
+                const totalBytes = (stats.priority.bytes + stats.video.bytes + stats.besteffort.bytes + stats.bulk.bytes) || 1;
 
-            document.getElementById("bar-priority").style.width = ((stats.priority.bytes / totalBytes) * 100).toFixed(0) + "%";
-            document.getElementById("bar-video").style.width = ((stats.video.bytes / totalBytes) * 100).toFixed(0) + "%";
-            document.getElementById("bar-besteffort").style.width = ((stats.besteffort.bytes / totalBytes) * 100).toFixed(0) + "%";
-            document.getElementById("bar-bulk").style.width = ((stats.bulk.bytes / totalBytes) * 100).toFixed(0) + "%";
+                document.getElementById("bar-priority").style.width = ((stats.priority.bytes / totalBytes) * 100).toFixed(0) + "%";
+                document.getElementById("bar-video").style.width = ((stats.video.bytes / totalBytes) * 100).toFixed(0) + "%";
+                document.getElementById("bar-besteffort").style.width = ((stats.besteffort.bytes / totalBytes) * 100).toFixed(0) + "%";
+                document.getElementById("bar-bulk").style.width = ((stats.bulk.bytes / totalBytes) * 100).toFixed(0) + "%";
 
-            document.getElementById("txt-priority").innerText = (stats.priority.bytes / 1048576).toFixed(1) + " MB";
-            document.getElementById("txt-video").innerText = (stats.video.bytes / 1048576).toFixed(1) + " MB";
-            document.getElementById("txt-besteffort").innerText = (stats.besteffort.bytes / 1048576).toFixed(1) + " MB";
-            document.getElementById("txt-bulk").innerText = (stats.bulk.bytes / 1048576).toFixed(1) + " MB";
+                document.getElementById("txt-priority").innerText = (stats.priority.bytes / 1048576).toFixed(1) + " MB";
+                document.getElementById("txt-video").innerText = (stats.video.bytes / 1048576).toFixed(1) + " MB";
+                document.getElementById("txt-besteffort").innerText = (stats.besteffort.bytes / 1048576).toFixed(1) + " MB";
+                document.getElementById("txt-bulk").innerText = (stats.bulk.bytes / 1048576).toFixed(1) + " MB";
+            }
 
             if (data.attractor_points) {
                 attractorPoints = data.attractor_points;
             }
         };
 
-        function addLog(msg) {
+        function addLog(tag, tagClass, msg) {
             const term = document.getElementById("logTerminal");
             const d = new Date();
             const timeStr = d.toTimeString().split(" ")[0] + "." + String(d.getMilliseconds()).padStart(3, "0");
             const div = document.createElement("div");
             div.className = "log-entry";
-            div.innerHTML = `<span class="log-time">[${timeStr}]</span> ${msg}`;
+            div.innerHTML = `<span class="${tagClass}">[${tag}]</span> <span style="color:#64748B;">[${timeStr}]</span> <span>${msg}</span>`;
             term.appendChild(div);
             term.scrollTop = term.scrollHeight;
         }
 
         async function triggerNilmSpike() {
-            const res = await fetch("/api/v1/nilm/trigger-spike", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ appliance_key: "console_gpu", intent_type: "GPU_GAMING_RENDER" })
-            });
-            const data = await res.json();
-            addLog(`⚡ NILM Physical Telemetry: Captured 2.8A GPU current transient! Dispatched pre-emptive Layer-2 frame with ${data.frame.preempt_lead_time_ms}ms lead time.`);
+            try {
+                const res = await fetch("/api/v1/nilm/trigger-spike", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ appliance_key: "console_gpu", intent_type: "GPU_GAMING_RENDER" })
+                });
+                const data = await res.json();
+                addLog("NILM", "tag-nilm", `Physical Telemetry: Captured 2.8A GPU current transient. Dispatched pre-emptive Layer-2 frame with ${data.frame.preempt_lead_time_ms}ms lead time.`);
+            } catch (e) {
+                console.error(e);
+            }
         }
 
         async function toggleWorkBoost() {
@@ -546,14 +1082,16 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ target_ip: "192.168.1.10", duration_sec: 1800 })
                 });
-                btn.style.background = "rgba(0, 240, 255, 0.3)";
+                btn.style.background = "rgba(6, 182, 212, 0.22)";
+                btn.style.borderColor = "#06B6D4";
                 status.innerText = "ACTIVE (30m)";
-                addLog("Intent Arbiter: Activated [WORK_CALL_BOOST] for 192.168.1.10 via atomic Netlink swap.");
+                addLog("INTENT", "tag-intent", "Intent Arbiter: Activated [WORK_CALL_BOOST] for 192.168.1.10 via atomic Netlink swap.");
             } else {
                 await fetch("/api/v1/intent/cancel", { method: "POST" });
-                btn.style.background = "rgba(0, 240, 255, 0.12)";
+                btn.style.background = "rgba(6, 182, 212, 0.08)";
+                btn.style.borderColor = "rgba(6, 182, 212, 0.28)";
                 status.innerText = "OFF";
-                addLog("Intent Arbiter: Work Call Boost revoked. Reverted to Gini certified fairness.");
+                addLog("INTENT", "tag-intent", "Intent Arbiter: Work Call Boost revoked. Reverted to Gini certified fairness.");
             }
         }
 
@@ -565,16 +1103,16 @@
 
             if (data.wan_degraded) {
                 status.innerText = "20M (Active)";
-                addLog("Shadow Staging: WAN collapsed to 20 Mbps! Verified 1% shadow profile, executed Netlink pointer swap in 1 clock cycle.");
+                addLog("SHADOW", "tag-shadow", "Shadow Staging: WAN collapsed to 20 Mbps. Verified 1% shadow profile, executed Netlink pointer swap in 1 clock cycle.");
             } else {
                 status.innerText = "100M";
-                addLog("Shadow Staging: WAN recovered to 100 Mbps. Scaling bandwidth ceiling.");
+                addLog("SHADOW", "tag-shadow", "Shadow Staging: WAN recovered to 100 Mbps. Scaling bandwidth ceiling.");
             }
         }
 
         async function tripCircuitBreaker() {
             await fetch("/api/v1/fuse/trip", { method: "POST" });
-            addLog("🚨 Anti-Overload Circuit Breaker: CPU threshold breached (86.5% >= 80%)! Fired 1-cycle RCU rollback to baseline FQ-CoDel.");
+            addLog("CIRCUIT_BREAKER", "tag-fuse", "Anti-Overload Circuit Breaker: CPU threshold breached (86.5% >= 80%). Fired 1-cycle RCU rollback to baseline FQ-CoDel.");
         }
     </script>
 </body>
